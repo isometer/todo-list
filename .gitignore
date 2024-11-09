@@ -1,2 +1,5 @@
 # don't commit env vars
 .env
+
+# or node_modules
+node_modules
