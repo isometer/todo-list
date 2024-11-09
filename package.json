@@ -1,0 +1,16 @@
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server/index.js", 
+    "client": "npm --prefix client start",  
+    "client-build": "npm --prefix client run build",
+    "heroku-postbuild": "npm run client-build"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "pg": "^8.13.1",
+    "dotenv": "^10.0.0"
+  }
+}
