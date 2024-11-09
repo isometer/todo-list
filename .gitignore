@@ -1,0 +1,2 @@
+# don't commit env vars
+.env
