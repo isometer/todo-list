@@ -6,17 +6,22 @@ function App() {
     const [newTask, setNewTask] = useState('');
 
     useEffect(() => {
-        axios.get('http://localhost:5000/todos')
-            .then(response => setTodos(response.data))
+        axios.get('http://localhost:5000/api/todos')
+            .then(response => {
+                console.log(Array.isArray(response.data)); // Should log true if it's an array
+                setTodos(response.data)
+            })
             .catch(error => console.error(error));
     }, []);
 
     const addTodo = () => {
-        axios.post('http://localhost:5000/todos', { task: newTask })
+        axios.post('http://localhost:5000/api/todos', { task: newTask })
             .then(response => setTodos([...todos, response.data]))
             .then(() => setNewTask(''))
             .catch(error => console.error(error));
     };
+
+    console.log("todos: ", todos)
 
     return (
         <div className="App">

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const { Pool } = require('pg'); // Assuming you're using PostgreSQL
@@ -16,6 +17,9 @@ const pool = new Pool({
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
+    ssl: {
+        rejectUnauthorized: false,  // Disable certificate verification (use only if trusted)
+    },
 });
 
 // Serve static files from React app
