@@ -1,4 +1,3 @@
-require('dotenv').config();
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -7,7 +6,7 @@ function App() {
     const [newTask, setNewTask] = useState('');
 
     useEffect(() => {
-        axios.get(process.env.API_ENDPOINT + '/todos')
+        axios.get(process.env.REACT_APP_API_ENDPOINT + '/todos')
             .then(response => {
                 setTodos(response.data)
             })
@@ -15,7 +14,7 @@ function App() {
     }, []);
 
     const addTodo = () => {
-        axios.post(process.env.API_ENDPOINT + '/todos', { task: newTask })
+        axios.post(process.env.REACT_APP_API_ENDPOINT + '/todos', { task: newTask })
             .then(response => setTodos([...todos, response.data]))
             .then(() => setNewTask(''))
             .catch(error => console.error(error));
