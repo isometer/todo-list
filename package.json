@@ -5,7 +5,8 @@
     "start": "node server/index.js", 
     "client": "npm --prefix client start",  
     "client-build": "npm --prefix client run build",
-    "heroku-postbuild": "npm run client-build"
+    "heroku-postbuild": "npm run client-build",
+    "postinstall": "npm install --prefix client"
   },
   "dependencies": {
     "cors": "^2.8.5",
