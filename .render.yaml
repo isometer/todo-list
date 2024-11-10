@@ -2,5 +2,5 @@ services:
   - type: web
     name: my-app
     env: node
-    buildCommand: npm --prefix client install && npm --prefix client run build
+    buildCommand: npm install --prefix client && npm --prefix client run build
     startCommand: npm --prefix client start
