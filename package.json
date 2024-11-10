@@ -6,7 +6,7 @@
     "client": "npm --prefix client start",  
     "client-build": "npm --prefix client run build",
     "heroku-postbuild": "npm run client-build",
-    "postinstall": "npm install --prefix client"
+    "postinstall": "npm install --prefix client && npm install --prefix server"
   },
   "dependencies": {
     "cors": "^2.8.5",
