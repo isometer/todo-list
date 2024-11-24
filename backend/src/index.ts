@@ -1,45 +1,34 @@
-import "reflect-metadata";
-import express from "express";
-import { DataSource } from "typeorm";
-import dotenv from "dotenv";
-import cors from "cors";
+import * as express from "express"
+import * as bodyParser from "body-parser"
+import { Request, Response } from "express"
+import { AppDataSource } from "./data-source"
+import { Routes } from "./routes"
 
-// Load environment variables
-const env = process.env.NODE_ENV || "development";
-dotenv.config({ path: `.env.${env}` });
+AppDataSource.initialize().then(async () => {
 
-// Create a new data source (connects to PostgreSQL)
-const AppDataSource = new DataSource({
-    type: "postgres",
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT || "5432", 10),
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    synchronize: process.env.DB_SYNC === "true", // Automatically syncs database schema (turn off in production)
-    logging: true,
-    entities: ["src/entity/*.ts"],
-});
+    // create express app
+    const app = express()
+    app.use(bodyParser.json())
 
-// Initialize the database and start the server
-const startServer = async () => {
-    try {
-        await AppDataSource.initialize();
-        console.log("Connected to the database");
+    // register express routes from defined application routes
+    Routes.forEach(route => {
+        (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
+            const result = (new (route.controller as any))[route.action](req, res, next)
+            if (result instanceof Promise) {
+                result.then(result => result !== null && result !== undefined ? res.send(result) : undefined)
 
-        const app = express();
+            } else if (result !== null && result !== undefined) {
+                res.json(result)
+            }
+        })
+    })
 
-        app.use(cors());
-        app.use(express.json());
+    // setup express app here
+    // ...
 
-        app.get("/", (req, res) => res.send("Server is running!"));
+    // start express server
+    app.listen(3000)
 
-        app.get("/api/message", (req, res) => res.json({message: "Hello from the backend!"}))
+    console.log("Express server has started on port 3000. Open http://localhost:3000/users to see results")
 
-        app.listen(3000, () => console.log("Server running on http://localhost:3000"));
-    } catch (error) {
-        console.error("Error starting server:", error);
-    }
-};
-
-startServer();
+}).catch(error => console.log(error))
