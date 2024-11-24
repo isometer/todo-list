@@ -1,4 +1,0 @@
-TODO:
-
-1. Connect to my Tembo database (use env variables)
-2. Host on Render

@@ -2,6 +2,7 @@ import "reflect-metadata";
 import express from "express";
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
+import cors from "cors";
 
 // Load environment variables
 const env = process.env.NODE_ENV || "development";
@@ -27,9 +28,13 @@ const startServer = async () => {
         console.log("Connected to the database");
 
         const app = express();
+
+        app.use(cors());
         app.use(express.json());
 
         app.get("/", (req, res) => res.send("Server is running!"));
+
+        app.get("/api/message", (req, res) => res.json({message: "Hello from the backend!"}))
 
         app.listen(3000, () => console.log("Server running on http://localhost:3000"));
     } catch (error) {
